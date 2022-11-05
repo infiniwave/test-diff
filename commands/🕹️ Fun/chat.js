@@ -1,8 +1,8 @@
 const {
   MessageEmbed
 } = require("discord.js");
-const config = require(`${process.cwd()}/botconfig/config.json`);
-const ee = require(`${process.cwd()}/botconfig/embed.json`);
+const config = require(`../../botconfig/config.json`);
+const ee = require(`../../botconfig/embed.json`);
 const fetch = require("node-fetch");
 module.exports = {
   name: "chat",
@@ -12,15 +12,15 @@ module.exports = {
   usage: "chat <TEXT>",
   description: "Let's you chat with the Bot via cmd",
   type: "text",
-  run: async (client, message, args, cmduser, text, prefix) => {
+  run: async (client, message, args, cmduser, text, prefix, player, es, ls, GuildSettings) => {
     
-    let es = client.settings.get(message.guild.id, "embed");let ls = client.settings.get(message.guild.id, "language")
-    if (!client.settings.get(message.guild.id, "FUN")) {
+    
+    if (GuildSettings.FUN === false) {
       return message.reply({embeds : [new MessageEmbed()
         .setColor(es.wrongcolor)
         .setFooter(client.getFooter(es))
         .setTitle(client.la[ls].common.disabled.title)
-        .setDescription(require(`${process.cwd()}/handlers/functions`).handlemsg(client.la[ls].common.disabled.description, {prefix: prefix}))
+        .setDescription(require(`../../handlers/functions`).handlemsg(client.la[ls].common.disabled.description, {prefix: prefix}))
       ]});
     }
     try {
@@ -35,7 +35,7 @@ module.exports = {
         message.content = args.join(" ")
       if (message.attachments.size > 0)
         return message.reply({content : "Look at this too...", files : "https://cdn.discordapp.com/attachments/816645188461264896/826736269509525524/I_CANNOT_READ_FILES.png"})
-      fetch(`http://api.brainshop.ai/get?bid=153861&key=0ZjvbPWKAxJvcJ96&uid=1&msg=${encodeURIComponent(message)}`).
+      fetch(`http://api.brainshop.ai/get?bid=169402&key=C92aIsAH09i395jt&uid=1&msg={${encodeURIComponent(message)}}`).
       then(res => res.json())
         .then(data => {
           message.reply({content : data.cnt}).catch(e => console.log("ERROR | " + e.stack));

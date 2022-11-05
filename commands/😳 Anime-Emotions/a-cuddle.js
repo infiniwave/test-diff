@@ -1,10 +1,11 @@
 const Discord = require("discord.js");
 const {MessageEmbed, MessageAttachment} = require("discord.js");
-const config = require(`${process.cwd()}/botconfig/config.json`);
+const config = require(`../../botconfig/config.json`);
 const canvacord = require("canvacord");
-var ee = require(`${process.cwd()}/botconfig/embed.json`);
-const emoji = require(`${process.cwd()}/botconfig/emojis.json`);
-const anime = require('anime-actions');
+var ee = require(`../../botconfig/embed.json`);
+const emoji = require(`../../botconfig/emojis.json`);
+const Anime_Images = require('anime-images-api')
+const API = new Anime_Images()
 module.exports = {
   name: "a-cuddle",
   aliases: ["acuddle", "animecuddle", "anime-cuddle"],
@@ -12,23 +13,23 @@ module.exports = {
   description: "Shows an Emotion-Expression in an Anime style",
   usage: "a-cuddle",
   type: "mention",
-  run: async (client, message, args, cmduser, text, prefix) => {
+  run: async (client, message, args, cmduser, text, prefix, player, es, ls, GuildSettings) => {
     
-    let es = client.settings.get(message.guild.id, "embed");let ls = client.settings.get(message.guild.id, "language")
-    if(!client.settings.get(message.guild.id, "ANIME")){
+    
+    if(GuildSettings.ANIME === false){
         return message.reply({embeds : [new MessageEmbed()
         .setColor(es.wrongcolor).setFooter(client.getFooter(es))
         .setTitle(client.la[ls].common.disabled.title)
-        .setDescription(require(`${process.cwd()}/handlers/functions`).handlemsg(client.la[ls].common.disabled.description, {prefix: prefix}))
+        .setDescription(require(`../../handlers/functions`).handlemsg(client.la[ls].common.disabled.description, {prefix: prefix}))
         ]});
     }
     //send new Message
     message.reply({embeds : [
         new MessageEmbed()
         .setColor(es.color)
-        .setImage(await anime.cuddle())
+        .setImage(await API.sfw.cuddle())
         .setAuthor(`${message.author.username} cuddles${message.mentions.users.first() ? " with" + message.mentions.users.first().username : " with him-/herself.."}`, message.author.displayAvatarURL({ dynamic: true }))
-    ]}).catch(() => {})
+    ]}).catch(() => null)
       
   }
 }

@@ -12,9 +12,9 @@ module.exports = {
   description: "Shows info about a server",
   usage: "serverinfo",
   type: "server",
-  run: async (client, message, args, cmduser, text, prefix, player) => {
-    let es = client.settings.get(message.guild.id, "embed");
-    let ls = client.settings.get(message.guild.id, "language");
+  run: async (client, message, args, cmduser, text, prefix, player, es, ls, GuildSettings) => {
+    
+    
     try {
       function trimArray(arr, maxLen = 40) {
         if ([...arr.values()].length > maxLen) {
@@ -25,8 +25,8 @@ module.exports = {
         }
         return arr.join(", ");
       }
-      message.guild.owner = await message.guild.fetchOwner().then(m => m.user).catch(() => {})
-      await message.guild.members.fetch().catch(() => {});
+      message.guild.owner = await message.guild.fetchOwner().then(m => m.user).catch(() => null)
+      await message.guild.members.fetch().catch(() => null);
       function emojitrimarray(arr, maxLen = 35) {
         if (arr.length > maxLen) {
           const len = arr.length - maxLen;
